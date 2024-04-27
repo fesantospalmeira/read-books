@@ -1,7 +1,8 @@
 import Input from '../Input';
 import styled from 'styled-components';
-import { useState } from 'react';
-import { Livros } from './dataSearch.js';
+import { useEffect, useState } from 'react';
+import { getLivros } from '../../services/books';
+
 
 const SearchContainer = styled.section`
     margin-bottom:250px;
@@ -34,13 +35,26 @@ const Resultados = styled.div`
 const Resultado = styled.div`
     margin: 20px;
     transition: 0.4s all;
-
+    
+    img{
+        width: 150px;
+    }
     &:hover {
         transform: scale(1.1)
     }
 `
 function Search() {
-    const [livrosPesquisados, setLivrosDigitado] = useState([]);
+    const [livrosPesquisados, setLivrosPesquisados] = useState([])
+    const [livros, setLivros] = useState([]);
+
+    useEffect(() =>{
+        fetchLivros();
+    }, [])
+
+    async function fetchLivros(){
+        const livrosAPI = await getLivros()
+        setLivros(livrosAPI)
+    }
 
     return (
         <SearchContainer>
@@ -50,15 +64,16 @@ function Search() {
                 placeholder='Escreva sua próxima leitura'
                 onBlur={event => {
                     const textoDigitado = event.target.value;
-                    const resultadoPesquisa = Livros.filter(livro => livro.nome.includes(textoDigitado))
-                    setLivrosDigitado(resultadoPesquisa);
+                    const resultadoPesquisa = livros.filter(livro => livro.title.toLowerCase().includes(textoDigitado))
+                    console.log(textoDigitado)
+                    setLivrosPesquisados(resultadoPesquisa);
                 }}
             />
             <Resultados>
                 {livrosPesquisados.map(livro => (
                     <Resultado>
-                        <p>{livro.nome}</p>
-                        <img src={livro.src} alt={livro.nome} />
+                        <p>{livro.title}</p>
+                        <img src={livro.src} alt={livro.title} />
 
                     </Resultado>
                 ))}
