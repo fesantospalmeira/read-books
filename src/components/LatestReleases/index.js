@@ -1,8 +1,9 @@
-import { Livros } from './latestReleasesData.js';
 import Title from '../Title'
-import CardRecomender from '../CardRecommender';
-import imagemLivro from '../../img/books/livro2.png'
+import { CardRecomender } from '../CardRecommender';
 import styled from "styled-components";
+import { useEffect, useState } from 'react';
+import { getRecentsBooks } from '../../services/books';
+import { Link } from 'react-router-dom';
 
 const UltimosLancamentosContainer = styled.section`
     margin-top: 100px;
@@ -20,29 +21,58 @@ const NovosLivrosContainer = styled.div`
     justify-content: center;
     cursor: pointer;
 `
+const RecentBooks = styled.div`
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  
+    margin: 20px;
+        transition: 0.4s all;
+        img{
+            width: 150px;
+        }
+        &:hover {
+            transform: scale(1.1)
+        }
+`
 function LatestReleases() {
+    const [livrosRecents, setLivrosRecentes] = useState([]);
+
+    useEffect(() => {
+        fetchLivrosRecentes();
+    }, [])
+
+    async function fetchLivrosRecentes() {
+        const recentBooksAPI = await getRecentsBooks();
+        setLivrosRecentes(recentBooksAPI)
+    }
+
     return (
         <UltimosLancamentosContainer>
             <Title
-            cor="#30261c"
-            tamanhoFonte='36px'
+                cor="#30261c"
+                tamanhoFonte='36px'
             >
                 Últimos Lançamentos
 
             </Title>
             <NovosLivrosContainer>
-                {Livros.map(livro => (
-                    <img src={livro.src} alt={livro.nome} />
+                {livrosRecents.map((livro) => (
+                    <RecentBooks>
+                        <p><strong>{livro.title}</strong></p>
+                        <Link to={`/detalhes/${livro._id}`}>
+                            <img src={livro.src} alt={livro.title} />
+                        </Link>
+
+                    </RecentBooks>
+
                 ))}
 
             </NovosLivrosContainer>
-            <CardRecomender
-                titulo='Talvez você se interesse por...'
-                subtitulo= 'Angular 11'
-                descricao= 'Construindo uma aplicação com a plataforma Google'
-                img = {imagemLivro}
-                alt = 'Ícone Angular'
-            />
+
+            <CardRecomender />
 
         </UltimosLancamentosContainer>
     )

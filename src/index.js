@@ -6,6 +6,8 @@ import Header from './components/Header';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Favoritos from './routes/Favoritos';
+import Autores from './routes/Autores';
+import {BooksPageWrapper} from './components/CardRecommender'
 
 
 const GlobalStyle = createGlobalStyle`
@@ -37,6 +39,8 @@ root.render(
     <Header/>
     <Routes>
       <Route path='/favoritos' element={<Favoritos/>}/>
+      <Route path='/autores' element={<Autores/>}/>
+      <Route path='/detalhes/:id' element={<BooksPageWrapper />} />
       <Route path='/' element={<Home />}/>
     </Routes>
     </BrowserRouter>

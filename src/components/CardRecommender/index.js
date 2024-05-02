@@ -1,6 +1,9 @@
-
 import styled from "styled-components"
 import Title from "../Title"
+import { useEffect, useState } from 'react';
+import { getLivrosPorID } from '../../services/books';
+import { Link, useParams } from "react-router-dom";
+import BooksPage from "../BooksPage";
 
 const Card = styled.div`
     align-items: center;
@@ -36,7 +39,7 @@ const Descricao = styled.p`
     max-width: 300px;
 `
 
-const Subtitulo = styled.h4`
+const Author = styled.h4`
     color: #30261c;
     font-size: 18px;
     font-weight: bold;
@@ -46,19 +49,58 @@ const Subtitulo = styled.h4`
 const ImgLivro = styled.img`
     width: 150px;
 `
-function CardRecomender({ titulo, subtitulo, descricao, img, alt }) {
+
+
+function CardRecomender() {
+    const [livroPorId, setLivro] = useState(null);
+
+    useEffect(() => {
+        fetchLivroPorId("662fd8c74ce1e0d6ae06111c");
+    }, []);
+
+    async function fetchLivroPorId(id) {
+        const livroRetornado = await getLivrosPorID(id);
+
+        setLivro(livroRetornado);
+    }
+
+    if (!livroPorId) {
+        return <div>Carregando...</div>
+    }
+
+    const {
+        _id: id,
+        title: titulo,
+        author: {
+            name: nomeAutor
+        },
+        price: preco,
+        pages: paginas,
+        src: img
+    } = livroPorId;
+
     return (
         <Card>
             <div>
-                <Title tamanhoFonte="16px" cor="#30261c" alinhamento="left">{titulo}</Title>
-                <Subtitulo>{subtitulo}</Subtitulo>
-                <Descricao>{descricao}</Descricao>
+                <Title tamanhoFonte="16px" cor="#403831" alinhamento="left">Você pode se interessar por:</Title>
+                <Title tamanhoFonte="16px" cor="#403831" alinhamento="left">{titulo}</Title>
+                <Author>Livro escrito por {nomeAutor} </Author>
+                <Descricao>Este livro custa R${preco}, e contém {paginas} páginas.</Descricao>
             </div>
             <div>
                 <ImgLivro src={img} />
-                <Botao>Saiba mais</Botao>
+                <Link to={`/detalhes/${id}`}><Botao>Saiba mais</Botao></Link>
+                
             </div>
         </Card>
     )
 }
-export default CardRecomender;
+
+function BooksPageWrapper() {
+    // Obtém o parâmetro de rota `id` usando o hook `useParams`
+    const { id } = useParams();
+
+    return <BooksPage urlTemplate="http://localhost:8000/books/{id}" dataId={id} />;
+}
+
+export  {CardRecomender,BooksPageWrapper} ;

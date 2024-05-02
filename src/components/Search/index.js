@@ -2,6 +2,7 @@ import Input from '../Input';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { getLivros } from '../../services/books';
+import { Link } from 'react-router-dom';
 
 
 const SearchContainer = styled.section`
@@ -47,11 +48,11 @@ function Search() {
     const [livrosPesquisados, setLivrosPesquisados] = useState([])
     const [livros, setLivros] = useState([]);
 
-    useEffect(() =>{
+    useEffect(() => {
         fetchLivros();
     }, [])
 
-    async function fetchLivros(){
+    async function fetchLivros() {
         const livrosAPI = await getLivros()
         setLivros(livrosAPI)
     }
@@ -62,18 +63,21 @@ function Search() {
             <Subtitulo>Encontre seu livro em nossa estante.</Subtitulo>
             <Input
                 placeholder='Escreva sua próxima leitura'
-                onBlur={event => {
+                onChange={event => {
                     const textoDigitado = event.target.value;
                     const resultadoPesquisa = livros.filter(livro => livro.title.toLowerCase().includes(textoDigitado))
-                    console.log(textoDigitado)
-                    setLivrosPesquisados(resultadoPesquisa);
+                    setLivrosPesquisados(textoDigitado ? resultadoPesquisa : []);
                 }}
             />
             <Resultados>
                 {livrosPesquisados.map(livro => (
-                    <Resultado>
+                    <Resultado><li>
                         <p>{livro.title}</p>
-                        <img src={livro.src} alt={livro.title} />
+                        <Link to={`/detalhes/${livro._id}`}>
+                            <img src={livro.src} alt={livro.title} />
+                        </Link>
+
+                    </li>
 
                     </Resultado>
                 ))}
