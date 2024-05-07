@@ -4,11 +4,11 @@ import axios from 'axios';
 import { BooksContainer, Card, Descriptions } from './style';
 import Title from '../Title';
 
-function BooksPage({ urlTemplate, dataId }) {
+
+function AuthorsPage({ urlTemplate, dataId }) {
     const [data, setData] = useState(null);
     const apiUrl = urlTemplate.replace('{id}', dataId);
-    console.log(dataId)
-    console.log(urlTemplate)
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -32,25 +32,21 @@ function BooksPage({ urlTemplate, dataId }) {
 
             {data ? (
                 <>
-                
                     <Card>
-                        <img src={data.src} alt={data.title}></img>
+                        <img src={data.img} alt={data.name}></img>
                         <Descriptions>
                             <Title
-                            cor="#30261c"
-                            tamanhoFonte='25px'
+                                cor="#30261c"
+                                tamanhoFonte='25px'
                             >{data.title}</Title>
-                            <p><strong>Livro escrito por: </strong> {data.author.name}</p>
-                            <p><strong>Livro publicado por: </strong>{data.publisher}</p>
-                            <p><strong>Páginas: </strong>{data.pages} páginas.</p>
-                            <p><strong>Valor:</strong> R${data.price}</p>
-                            <p><strong>Descrição: </strong>
-                                Descrição genérica.
-                            </p>
+                            <p><strong>{data.name}</strong></p>
+                            <p><strong>Nacionalidade: </strong>{data.nationality}</p>
+                            <p><strong>Idade:</strong> {data.age} anos.</p>
+
                         </Descriptions>
 
                     </Card>
-              
+
 
 
                 </>
@@ -64,9 +60,9 @@ function BooksPage({ urlTemplate, dataId }) {
     );
 }
 
-BooksPage.propTypes = {
+AuthorsPage.propTypes = {
     urlTemplate: PropTypes.string.isRequired,
     dataId: PropTypes.string.isRequired,
 };
 
-export default BooksPage;
+export default AuthorsPage;

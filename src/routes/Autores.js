@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import AuthorsList from '../components/AuthorsList';
+import {AuthorsList} from '../components/AuthorsList';
 
 const AppContainer = styled.div`
     width: 100vw;

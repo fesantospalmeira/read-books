@@ -21,7 +21,7 @@ const Opcoes = styled.li`
 `
 
 function OpcoesHeader() {
-    const textoOpcoes = ['Autores', 'Favoritos', 'Minha Estante'];
+    const textoOpcoes = ['Autores', 'Livros'];
     return (
         <OpcaoContainer>
             {textoOpcoes.map((texto) => (

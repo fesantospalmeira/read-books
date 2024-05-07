@@ -5,9 +5,10 @@ import reportWebVitals from './reportWebVitals';
 import Header from './components/Header';
 import { createGlobalStyle } from 'styled-components';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Favoritos from './routes/Favoritos';
+import Livros from './routes/Livros';
 import Autores from './routes/Autores';
-import {BooksPageWrapper} from './components/CardRecommender'
+import { BooksPageWrapper } from './components/CardRecommender'
+import { AuthorPageWrapper } from './components/AuthorsList';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -36,13 +37,14 @@ root.render(
   <React.StrictMode>
     <GlobalStyle />
     <BrowserRouter>
-    <Header/>
-    <Routes>
-      <Route path='/favoritos' element={<Favoritos/>}/>
-      <Route path='/autores' element={<Autores/>}/>
-      <Route path='/detalhes/:id' element={<BooksPageWrapper />} />
-      <Route path='/' element={<Home />}/>
-    </Routes>
+      <Header />
+      <Routes>
+        <Route path='/livros' element={<Livros />} />
+        <Route path='/autores' element={<Autores />} />
+        <Route path='/autores/:id' element={<AuthorPageWrapper />} />
+        <Route path='/detalhes/:id' element={<BooksPageWrapper />} />
+        <Route path='/' element={<Home />} />
+      </Routes>
     </BrowserRouter>
   </React.StrictMode>
 );

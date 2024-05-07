@@ -1,4 +1,4 @@
-import Search from '../components/Search';
+import BooksList from '../components/BooksList';
 import styled from 'styled-components';
 
 const AppContainer = styled.div`
@@ -10,7 +10,7 @@ const AppContainer = styled.div`
 function Favoritos() {
   return (
     <AppContainer>
-      <Search />
+      <BooksList />
 
     </AppContainer>
 

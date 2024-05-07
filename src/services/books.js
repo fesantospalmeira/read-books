@@ -18,8 +18,15 @@ async function getRecentsBooks(){
     return response.data;
 }
 
+async function getAllBooks(){
+    const response = await booksAPI.get('?limit=100');
+
+    return response.data;
+}
+
 export {
     getLivros,
     getRecentsBooks,
-    getLivrosPorID
+    getLivrosPorID,
+    getAllBooks
 }
